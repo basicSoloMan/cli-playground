@@ -16,17 +16,23 @@ func runEditor() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	defer termbox.Close()
 
-	printMessage(25, 11, termbox.ColorDefault, termbox.ColorDefault, "EGO Text Editor")
+	for {
+		printMessage(25, 11, termbox.ColorDefault, termbox.ColorDefault, "EGO Text Editor")
 
-	err := termbox.Flush()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		err := termbox.Flush()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+
+		event := termbox.PollEvent()
+		if event.Type == termbox.EventKey && event.Key == termbox.KeyEsc {
+			termbox.Close()
+			break
+		}
 	}
 
-	termbox.PollEvent()
 }
 
 func printMessage(col, row int, fg, bg termbox.Attribute, message string) {
